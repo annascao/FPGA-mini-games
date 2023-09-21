@@ -1,0 +1,39 @@
+Chu's Textbook
+keyboard interfacing: chapter 9
+VGA generation: chapter 13, 14
+
+top level module inputs and outputs are initialized by the .qsf file --> check set_global_assignment -name values
+
+what are assembler assignments in .qsf file? is it lab 5 specific?
+
+RGB
+000 = black
+001 = blue
+010 = green
+011 = cyan
+100 = red
+101 = magenta
+110 = yellow
+111 = white
+13.1.2 for more colors?
+
+vga port:
+- 5 signals: horizontal + vertical sync, r, g, b
+- video signal is analog, sent through dac in video controller
+
+horizontal + vertical sync? can i use doublesync? look for this in code -- should be in output to vga port? *VGA_HS, VGA_VS sent into qsys module
+check page 12.2.4 for hdl of vga_sync + testing modules -- maybe try this?
+
+what is video_on signal? its a wire in vga_sync
+
+characters / objects: plot_graph.v seems complex? maybe graph_bars.v is easier?
+store characters and objects in rom?
+characters: use tile mapped scheme -- 8x8 square of pixels, treat these like mini displays 
+where were the buttons?
+
+UI:
+choose game: use cursor to select mode, press key to go back to home page
+restart game?
+game over?
+display data?
+high scores?
