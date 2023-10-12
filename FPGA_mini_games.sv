@@ -1,6 +1,7 @@
 `default_nettype none
 //`include "scan_events.h"
 //`define ENABLE_AUDIO_DEMO
+
 module FPGA_mini_games(
 
       ///////// ADC /////////
@@ -165,16 +166,40 @@ module FPGA_mini_games(
       output             VGA_VS
 );
 
-always_comb begin
+// 1ms = 1000hz clock
+logic clk_1ms;
+Clock_Divider clock_1khz(.divider(32'd50000), .base_clock(CLOCK_50), .clock(clk_1ms));
+
+// 1 second = 1hz clock
+logic clk_1s;
+Clock_Divider clock_1hz(.divider(32'd50000000), .base_clock(CLOCK_50), .clock(clk_1s));
+
+//game1_fsm()
+
+// generate a ranom number from 0-15 (4 bits) every second using lfsr
+logic [3:0] test;
+lfsr random_number(.clk(clk_1s), .lfsr(test));
+
+// using the random number, the corresponding delay is used to determine when we start the game
+start_timer light(.test(test), .clk(clk_1s), .hex(HEX[6:0]));
+
+//testing stuff
+always_ff@(posedge CLOCK_50) begin
       if (KEY[0] == 1'b1) begin
-            LEDR[0] = 1'b1;
-            LEDR[1] = 1'b0;
+            LEDR[0] = test[0];
+            LEDR[1] = test[1];
+            LEDR[2] = test[2];
+            LEDR[3] = test[3];
       end
       else begin
             LEDR[0] = 1'b0;
-            LEDR[1] = 1'b1;
+            LEDR[1] = 1'b0;
+            LEDR[2] = 1'b0;
+            LEDR[3] = 1'b0;
       end
 end
+
+
 
 endmodule
 `default_nettype wire
