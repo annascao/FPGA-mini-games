@@ -1,7 +1,7 @@
 `default_nettype none
-`include "scan_events.h"
+//`include "scan_events.h"
 //`define ENABLE_AUDIO_DEMO
-module dds_and_nios_lab(
+module FPGA_mini_games(
 
       ///////// ADC /////////
       output             ADC_CONVST,
@@ -166,8 +166,14 @@ module dds_and_nios_lab(
 );
 
 always_comb begin
-      if (KEY[0] == 1'b1) LEDR[0] = 1;
-      else LEDR[1] = 1;
+      if (KEY[0] == 1'b1) begin
+            LEDR[0] = 1'b1;
+            LEDR[1] = 1'b0;
+      end
+      else begin
+            LEDR[0] = 1'b0;
+            LEDR[1] = 1'b1;
+      end
 end
 
 endmodule
