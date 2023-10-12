@@ -165,7 +165,10 @@ module dds_and_nios_lab(
       output             VGA_VS
 );
 
-
+always_comb begin
+      if (KEY[0] == 1'b1) LEDR[0] = 1;
+      else LEDR[1] = 1;
+end
 
 endmodule
 `default_nettype wire
