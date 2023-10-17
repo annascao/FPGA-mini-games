@@ -1,4 +1,4 @@
-`default_nettype none
+//`default_nettype none
 //`include "scan_events.h"
 //`define ENABLE_AUDIO_DEMO
 
@@ -174,22 +174,30 @@ Clock_Divider clock_1khz(.divider(32'd50000), .base_clock(CLOCK_50), .clock(clk_
 logic clk_1s;
 Clock_Divider clock_1hz(.divider(32'd50000000), .base_clock(CLOCK_50), .clock(clk_1s));
 
-//game1_fsm()
+// generate a ranom number from 0-15 using 4 bit lfsr
+logic [3:0] delay_code;
+logic new_number;
+lfsr random_number(.clk(clk_1ms), .new_number(new_number), .lfsr(delay_code));
 
-// generate a ranom number from 0-15 (4 bits) every second using lfsr
-logic [3:0] test;
-lfsr random_number(.clk(clk_1s), .lfsr(test));
-
+logic delay_done;
 // using the random number, the corresponding delay is used to determine when we start the game
-start_timer light(.test(test), .clk(clk_1s), .hex(HEX[6:0]));
+delay_timer delay(.delay_code(delay_code), .clk(clk_1ms), .delay_done(delay_done));
 
-//testing stuff
-always_ff@(posedge CLOCK_50) begin
-      if (KEY[0] == 1'b1) begin
-            LEDR[0] = test[0];
-            LEDR[1] = test[1];
-            LEDR[2] = test[2];
-            LEDR[3] = test[3];
+logic rflag;
+logic [2:0] hex_instructions;
+game1_fsm game1(.clk(CLOCK_50), .switch(SW[9]), .key(KEY[0]), .delay_done(delay_done), .rflag(rflag), .hex_instructions(hex_instructions), .new_number(new_number));
+
+HEX_controller display(.hex_instructions(hex_instructions), .HEX0(HEX0), .HEX1(HEX1), .HEX2(HEX2), .HEX3(HEX3), .HEX4(HEX4), .HEX5(HEX5));
+
+endmodule
+//`default_nettype wire
+
+/*always_ff@(posedge CLOCK_50) begin
+      if (new_number == 1'b1) begin
+            LEDR[0] = delay_code[0];
+            LEDR[1] = delay_code[1];
+            LEDR[2] = delay_code[2];
+            LEDR[3] = delay_code[3];
       end
       else begin
             LEDR[0] = 1'b0;
@@ -197,9 +205,4 @@ always_ff@(posedge CLOCK_50) begin
             LEDR[2] = 1'b0;
             LEDR[3] = 1'b0;
       end
-end
-
-
-
-endmodule
-`default_nettype wire
+end*/
