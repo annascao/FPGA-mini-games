@@ -41,7 +41,7 @@ set_global_assignment -name DEVICE 5CSEMA5F31C6
 set_global_assignment -name TOP_LEVEL_ENTITY FPGA_mini_games
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 18.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "13:38:12  OCTOBER 12, 2023"
-set_global_assignment -name LAST_QUARTUS_VERSION "16.1.2 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
@@ -312,6 +312,10 @@ set_location_assignment PIN_C10 -to VGA_SYNC_N
 set_location_assignment PIN_D11 -to VGA_VS
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name SYSTEMVERILOG_FILE reaction_speed_timer.sv
+set_global_assignment -name SYSTEMVERILOG_FILE HEX_controller.sv
+set_global_assignment -name VERILOG_FILE doublesync.v
+set_global_assignment -name SYSTEMVERILOG_FILE delay_timer.sv
 set_global_assignment -name SYSTEMVERILOG_FILE lfsr.sv
 set_global_assignment -name SYSTEMVERILOG_FILE FPGA_mini_games.sv
 set_global_assignment -name SYSTEMVERILOG_FILE game1_fsm.sv
